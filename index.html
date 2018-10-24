@@ -104,15 +104,27 @@
         class Game {
             constructor() {
                 this.initialize()
+                this.generateSequence()
             }
 
             initialize() {
                 startButton.classList.add('hide')
+                this.level = 1
+                this.colores = {
+                    green,
+                    red,
+                    yellow,
+                    blue
+                }
+            }
+
+            generateSequence() {
+                this.sequence = new Array(10).fill(0).map(n => Math.floor(Math.random() * 4))
             }
         }
 
         function startGame() {
-            var game = new Game()
+            window.game = new Game()
         }
     </script>
 </body>
