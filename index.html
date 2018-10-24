@@ -37,36 +37,36 @@
             float: left;
         }
 
-        .celeste {
-            background: #22a6b3;
+        .blue {
+            background: #2286E6;
         }
 
-        .celeste.light {
-            background: #7ed6df;
+        .blue.light {
+            background: #549fe5;
         }
 
-        .violeta {
-            background: #be2edd;
+        .red {
+            background: #C10E1D;
         }
 
-        .violeta.light {
-            background: #e056fd;
+        .red.light {
+            background: #e83e4c;
         }
 
-        .naranja {
-            background: #f0932b;
+        .yellow {
+            background: #EEE64C;
         }
 
-        .naranja.light {
-            background: #ffbe76;
+        .yellow.light {
+            background: #ede77d;
         }
 
-        .verde {
-            background: #6ab04c;
+        .green {
+            background: #1F8F40;
         }
 
-        .verde.light {
-            background: #badc58;
+        .green.light {
+            background: #56a06c;
         }
 
         .btn-start {
@@ -88,31 +88,31 @@
 
 <body>
     <div class="gameboard">
-        <div id="celeste" class="color celeste left" data-color="celeste"></div>
-        <div id="violeta" class="color violeta right" data-color="violeta"></div>
-        <div id="naranja" class="color naranja left" data-color="naranja"></div>
-        <div id="verde" class="color verde right" data-color="verde"></div>
-        <button id="btnEmpezar" class="btn-start" onclick="empezarJuego()">Empezar a jugar!</button>
+        <div id="green" class="color green left" data-color="green"></div>
+        <div id="red" class="color red right" data-color="red"></div>
+        <div id="yellow" class="color yellow left" data-color="yellow"></div>
+        <div id="blue" class="color blue right" data-color="blue"></div>
+        <button id="start-button" class="btn-start" onclick="startGame()">Start to play!</button>
     </div>
     <script>
-        const celeste = document.getElementById('celeste')
-        const violeta = document.getElementById('violeta')
-        const naranja = document.getElementById('naranja')
-        const verde = document.getElementById('verde')
-        const btnEmpezar = document.getElementById('btnEmpezar')
+        const green = document.getElementById('green')
+        const red = document.getElementById('red')
+        const yellow = document.getElementById('yellow')
+        const blue = document.getElementById('blue')
+        const startButton = document.getElementById('start-button')
 
-        class Juego {
+        class Game {
             constructor() {
-                this.inicializar()
+                this.initialize()
             }
 
-            inicializar() {
-                btnEmpezar.classList.add('hide')
+            initialize() {
+                startButton.classList.add('hide')
             }
         }
 
-        function empezarJuego() {
-            var juego = new Juego()
+        function startGame() {
+            var game = new Game()
         }
     </script>
 </body>
