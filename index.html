@@ -105,12 +105,13 @@
             constructor() {
                 this.initialize()
                 this.generateSequence()
+                this.nextLevel()
             }
 
             initialize() {
                 startButton.classList.add('hide')
-                this.level = 1
-                this.colores = {
+                this.level = 7
+                this.colors = {
                     green,
                     red,
                     yellow,
@@ -120,6 +121,43 @@
 
             generateSequence() {
                 this.sequence = new Array(10).fill(0).map(n => Math.floor(Math.random() * 4))
+            }
+
+            nextLevel() {
+                this.lightUpSequence()
+            }
+
+            getColor(number) {
+                switch (number) {
+                    case 0:
+                        return 'blue'
+                    case 1:
+                        return 'red'
+                    case 2:
+                        return 'yellow'
+                    case 3:
+                        return 'green'
+                }
+            }
+
+            lightUpSequence() {
+                for (let i = 0; i < this.level; i++) {
+                    const color = this.getColor(this.sequence[i]);
+                    setTimeout(() => {
+                        this.lightUpColor(color)
+                    }, 1000 * i);
+                }
+            }
+
+            lightUpColor(color) {
+                this.colors[color].classList.add('light')
+                setTimeout(() => {
+                    this.turnOffColor(color)
+                }, 350);
+            }
+
+            turnOffColor(color) {
+                this.colors[color].classList.remove('light')
             }
         }
 
