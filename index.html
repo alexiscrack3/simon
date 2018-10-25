@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Simon Dice</title>
+    <title>Simon Game</title>
     <style>
         body {
             margin: 0;
@@ -83,6 +83,10 @@
         .hide {
             display: none;
         }
+
+        * {
+            font: "Arial";
+        }
     </style>
 </head>
 
@@ -94,13 +98,14 @@
         <div id="blue" class="color blue right" data-color="blue"></div>
         <button id="start-button" class="btn-start" onclick="startGame()">Start to play!</button>
     </div>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         const green = document.getElementById('green')
         const red = document.getElementById('red')
         const yellow = document.getElementById('yellow')
         const blue = document.getElementById('blue')
         const startButton = document.getElementById('start-button')
-        const LAST_LEVEL = 10
+        const LAST_LEVEL = 3
 
         class Game {
             constructor() {
@@ -111,10 +116,11 @@
             }
 
             initialize() {
+                this.initialize = this.initialize.bind(this)
                 this.chooseColor = this.chooseColor.bind(this)
                 this.nextLevel = this.nextLevel.bind(this)
 
-                startButton.classList.add('hide')
+                this.toggleStartButton()
                 this.level = 1
                 this.colors = {
                     green,
@@ -131,7 +137,15 @@
             nextLevel() {
                 this.colorIndex = 0
                 this.lightUpSequence()
-                this.addClickEventListenters(0)
+                this.addClickEventListenters()
+            }
+
+            toggleStartButton() {
+                if (startButton.classList.contains('hide')) {
+                    startButton.classList.remove('hide')
+                } else {
+                    startButton.classList.add('hide')
+                }
             }
 
             getColorName(number) {
@@ -165,7 +179,7 @@
                     const color = this.getColorName(this.sequence[i]);
                     setTimeout(() => {
                         this.lightUpColor(color)
-                    }, 1000 * i);
+                    }, 1000 * (i + 1));
                 }
             }
 
@@ -179,7 +193,7 @@
             turnOffColor(color) {
                 this.colors[color].classList.remove('light')
             }
-            
+
             addClickEventListenters() {
                 for (const key in this.colors) {
                     if (this.colors.hasOwnProperty(key)) {
@@ -188,7 +202,7 @@
                     }
                 }
             }
-            
+
             removeClickEventListenters() {
                 for (const key in this.colors) {
                     if (this.colors.hasOwnProperty(key)) {
@@ -207,17 +221,33 @@
 
                     if (this.colorIndex === this.level) {
                         this.level++
-                        this.removeClickEventListenters()
 
-                        if(this.level === LAST_LEVEL) {
-
+                        if (this.level > LAST_LEVEL) {
+                            this.winGame()
                         } else {
+                            this.removeClickEventListenters()
                             setTimeout(this.nextLevel(), 1500)
                         }
                     }
                 } else {
-
+                    this.lostGame()
                 }
+            }
+
+            winGame() {
+                swal('Simon', "You won =)!", "success")
+                    .then(() => {
+                        this.removeClickEventListenters()
+                        this.initialize()
+                    })
+            }
+
+            lostGame() {
+                swal('Simon', "You lost =(!", "error")
+                    .then(() => {
+                        this.removeClickEventListenters()
+                        this.initialize()
+                    })
             }
         }
 
