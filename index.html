@@ -100,17 +100,22 @@
         const yellow = document.getElementById('yellow')
         const blue = document.getElementById('blue')
         const startButton = document.getElementById('start-button')
+        const LAST_LEVEL = 10
 
         class Game {
             constructor() {
                 this.initialize()
                 this.generateSequence()
-                this.nextLevel()
+
+                setTimeout(this.nextLevel(), 500);
             }
 
             initialize() {
+                this.chooseColor = this.chooseColor.bind(this)
+                this.nextLevel = this.nextLevel.bind(this)
+
                 startButton.classList.add('hide')
-                this.level = 7
+                this.level = 1
                 this.colors = {
                     green,
                     red,
@@ -120,14 +125,16 @@
             }
 
             generateSequence() {
-                this.sequence = new Array(10).fill(0).map(n => Math.floor(Math.random() * 4))
+                this.sequence = new Array(LAST_LEVEL).fill(0).map(n => Math.floor(Math.random() * 4))
             }
 
             nextLevel() {
+                this.colorIndex = 0
                 this.lightUpSequence()
+                this.addClickEventListenters(0)
             }
 
-            getColor(number) {
+            getColorName(number) {
                 switch (number) {
                     case 0:
                         return 'blue'
@@ -140,9 +147,22 @@
                 }
             }
 
+            getColorCode(name) {
+                switch (name) {
+                    case 'blue':
+                        return 0
+                    case 'red':
+                        return 1
+                    case 'yellow':
+                        return 2
+                    case 'green':
+                        return 3
+                }
+            }
+
             lightUpSequence() {
                 for (let i = 0; i < this.level; i++) {
-                    const color = this.getColor(this.sequence[i]);
+                    const color = this.getColorName(this.sequence[i]);
                     setTimeout(() => {
                         this.lightUpColor(color)
                     }, 1000 * i);
@@ -158,6 +178,46 @@
 
             turnOffColor(color) {
                 this.colors[color].classList.remove('light')
+            }
+            
+            addClickEventListenters() {
+                for (const key in this.colors) {
+                    if (this.colors.hasOwnProperty(key)) {
+                        const element = this.colors[key];
+                        element.addEventListener('click', this.chooseColor)
+                    }
+                }
+            }
+            
+            removeClickEventListenters() {
+                for (const key in this.colors) {
+                    if (this.colors.hasOwnProperty(key)) {
+                        const element = this.colors[key];
+                        element.removeEventListener('click', this.chooseColor)
+                    }
+                }
+            }
+
+            chooseColor(e) {
+                const colorName = e.target.dataset.color
+                const colorCode = this.getColorCode(colorName)
+                this.lightUpColor(colorName)
+                if (this.sequence[this.colorIndex] == colorCode) {
+                    this.colorIndex++
+
+                    if (this.colorIndex === this.level) {
+                        this.level++
+                        this.removeClickEventListenters()
+
+                        if(this.level === LAST_LEVEL) {
+
+                        } else {
+                            setTimeout(this.nextLevel(), 1500)
+                        }
+                    }
+                } else {
+
+                }
             }
         }
 
